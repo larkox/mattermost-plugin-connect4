@@ -1,4 +1,4 @@
-module github.com/mattermost/mattermost-plugin-starter-template/build
+module github.com/larkox/mattermost-plugin-connect4/build
 
 go 1.12
 
