@@ -25,7 +25,7 @@ func (p *Plugin) initializeAPI() {
 	attachmentRouter.HandleFunc(AttachmentPathMove+"/{id}", p.handleMove).Methods(http.MethodPost)
 	attachmentRouter.HandleFunc(AttachmentPathResign+"/{id}", p.handleResign)
 
-	p.router.HandleFunc(ImagePath+"/{id}", p.handleImage).Methods(http.MethodGet)
+	p.router.HandleFunc(ImagePath+"/{id}.svg", p.handleImage).Methods(http.MethodGet)
 	p.router.HandleFunc("/test", p.handleTestGame).Methods(http.MethodGet)
 }
 
@@ -294,7 +294,7 @@ func (p *Plugin) getAttachmentURL() string {
 
 func (p *Plugin) getImageURL(id string) string {
 	return fmt.Sprintf(
-		"%s%s/%s?ts=%s",
+		"%s%s/%s.svg?ts=%s",
 		p.getPluginURL(),
 		ImagePath,
 		id,

@@ -12,9 +12,9 @@ var manifest *model.Manifest
 
 const manifestStr = `
 {
-  "id": "com.mattermost.plugin-starter-template",
-  "name": "Plugin Starter Template",
-  "description": "This plugin serves as a starting point for writing a Mattermost plugin.",
+  "id": "com.mattermost.connect4",
+  "name": "Connect4",
+  "description": "This plugin allows you to play Connect4 with other Mattermost users.",
   "homepage_url": "https://github.com/larkox/mattermost-plugin-connect4",
   "support_url": "https://github.com/larkox/mattermost-plugin-connect4/issues",
   "release_notes_url": "https://github.com/larkox/mattermost-plugin-connect4/releases/tag/v0.1.0",

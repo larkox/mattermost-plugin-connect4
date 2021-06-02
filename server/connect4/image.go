@@ -1,6 +1,7 @@
 package connect4
 
 import (
+	"fmt"
 	"io"
 	"strconv"
 
@@ -27,15 +28,15 @@ const (
 
 func EncodeBoard(w io.Writer, board [][]int, lastMovement int) {
 	canvas := svg.New(w)
-	canvas.Start(boardWidth, boardHeight)
-	canvas.Rect(0, 0, boardWidth, boardHeight, "fill: "+boardColor)
+	canvas.Start(boardWidth, boardHeight, fmt.Sprintf("viewBox=\"0 0 %d %d\"", boardWidth, boardHeight))
+	canvas.Rect(0, 0, boardWidth, boardHeight, "fill:"+boardColor)
 
 	for i := 0; i < columns; i++ {
 		x := i * sqrSize
 		highlighted := false
 		for j := 0; j < rows; j++ {
 			y := j * sqrSize
-			style := "fill: "
+			style := "fill:"
 			player := board[i][j]
 			switch player {
 			case 1:
@@ -53,7 +54,7 @@ func EncodeBoard(w io.Writer, board [][]int, lastMovement int) {
 				highlighted = true
 			}
 		}
-		textStyle := "dominant-baseline:middle;text-anchor:middle;fill:" + textColor + ";font-size: " + strconv.Itoa(textSize) + "px"
+		textStyle := "dominant-baseline:middle;text-anchor:middle;fill:" + textColor + ";font-size:" + strconv.Itoa(textSize) + "px"
 		canvas.Text(x+sqrSize/2, (rows)*sqrSize+sqrSize/2, strconv.Itoa(i+1), textStyle)
 	}
 	canvas.End()
