@@ -156,13 +156,12 @@ func (p *Plugin) handleMovement(w http.ResponseWriter, r *http.Request) {
 		interactiveDialogError(w, "Invalid field", map[string]string{"movement": "Could not recognize movement."})
 	}
 
-	err = p.gameManager.Move(gameID, userID, movement)
+	post, err := p.gameManager.Move(gameID, userID, movement)
 	if err != nil {
 		interactiveDialogError(w, err.Error(), nil)
 		return
 	}
 
-	post := p.gameManager.GetGamePost(gameID)
 	_, _ = p.API.UpdatePost(post)
 
 	_, _ = w.Write((&model.SubmitDialogResponse{}).ToJson())
@@ -178,13 +177,12 @@ func (p *Plugin) handleResignation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err := p.gameManager.Resign(gameID, userID)
+	post, err := p.gameManager.Resign(gameID, userID)
 	if err != nil {
 		interactiveDialogError(w, err.Error(), nil)
 		return
 	}
 
-	post := p.gameManager.GetGamePost(gameID)
 	_, _ = p.API.UpdatePost(post)
 
 	_, _ = w.Write((&model.SubmitDialogResponse{}).ToJson())
