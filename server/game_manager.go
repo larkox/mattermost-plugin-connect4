@@ -66,30 +66,30 @@ func (gm *GameManager) CreateGame(playerA, playerB string) error {
 	return nil
 }
 
-func (gm *GameManager) Move(id, player string, movement int) error {
+func (gm *GameManager) Move(id, player string, movement int) (*model.Post, error) {
 	game := gm.getGame(id)
 	if game == nil {
-		return errors.New("no game started")
+		return nil, errors.New("no game started")
 	}
 
 	turn := game.GetTurnPlayer()
 	if player != turn {
-		return errors.New("it is not your turn")
+		return nil, errors.New("it is not your turn")
 	}
 
 	err := game.Move(movement)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	gm.saveGame(game)
-	return nil
+	return gm.gameToPost(game), nil
 }
 
-func (gm *GameManager) Resign(id, player string) error {
+func (gm *GameManager) Resign(id, player string) (*model.Post, error) {
 	game := gm.getGame(id)
 	if game == nil {
-		return errors.New("no game started")
+		return nil, errors.New("no game started")
 	}
 
 	_, _, player1, player2 := gm.getGameMetadata(game)
@@ -100,11 +100,11 @@ func (gm *GameManager) Resign(id, player string) error {
 	case player2.Id:
 		game.Resign(connect4.Player2)
 	default:
-		return errors.New("you are not playing")
+		return nil, errors.New("you are not playing")
 	}
 
 	gm.saveGame(game)
-	return nil
+	return gm.gameToPost(game), nil
 }
 
 func (gm *GameManager) getGame(id string) connect4.Game {
@@ -201,15 +201,6 @@ func (gm *GameManager) getGameMetadata(game connect4.Game) (string, string, *mod
 	}
 
 	return id, postID, player1, player2
-}
-
-func (gm *GameManager) GetGamePost(id string) *model.Post {
-	g := gm.getGame(id)
-	if g == nil {
-		return nil
-	}
-
-	return gm.gameToPost(g)
 }
 
 func (gm *GameManager) CanMove(id, player string) bool {
